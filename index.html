@@ -168,12 +168,9 @@ Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch c
 
 		let skin = params.skin;
 		var sprite = document.getElementById("sprite");
-		if (skin == "shrek"){
-			sprite.src = "shrek.png"
-		}else if (skin == "sus"){
-			sprite.src = "sus.png"
+		if (skin != null){
+			sprite.src = skin + ".png"
 		}
-
 
 
 
@@ -234,6 +231,8 @@ Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch c
 			menuloop, broken = 0,
 			dir, score = 0, firstRun = true;
 			onion = 0;
+			start = Date.now();
+
 
 		//Base object
 		var Base = function() {
@@ -634,6 +633,10 @@ Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch c
 					s.state = 1;
 					player.jumpHigh();
 					onion++;
+					if(onion == 10){
+						player.isDead = true;
+						gameOver();
+					}
 				}
 
 			}
@@ -641,8 +644,9 @@ Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch c
 			function updateScore() {
 				var scoreText = document.getElementById("score");
 				scoreText.innerHTML = score;
+				score = Date.now() - start; // milliseconds elapsed since start
 				if (skin == "shrek")
-					scoreText.innerHTML = onion;
+					scoreText.innerHTML = onion + " onions " + score/1000.0 +" sec";
 			}
 
 			function gameOver() {
@@ -702,6 +706,7 @@ Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch c
 			position = 0;
 			score = 0;
 			onion = 0;
+			start = Date.now();
 
 			base = new Base();
 			player = new Player();
@@ -729,8 +734,13 @@ Orginal code / game based on Authors: Kushagra Agarwal and Lima Sky with touch c
 			if(navigator.userAgent.toLowerCase().indexOf("firefox") != -1 && navigator.userAgent.toLowerCase().indexOf("android") != -1)menu.style.display="block";// *ff
 			var scoreText = document.getElementById("go_score");
 			scoreText.innerHTML = "You got " + score + " points!";
-			if (skin == "shrek")
-				scoreText.innerHTML = "You got " + onion + " onions!";
+			if (skin == "shrek"){
+				if (onion == 10){
+					scoreText.innerHTML = "Time: " + score/1000 + " sec";
+				}else{
+					scoreText.innerHTML = "Score: " + onion + " onions";
+				}
+			}
 		}
 
 		//Hides the game over menu
